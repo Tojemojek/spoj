@@ -1,0 +1,13 @@
+gitignore
+**/out
+**/.idea
+**/target
+*.iml
+**/NaukaSamemu
+**/Spakowane
+**/Stare_i_nieistotne
+**/PraceDomowe
+**/NaukaSamemu
+**/PraceDomoweZ*
+**/Spoj
+**/SlownikPL
