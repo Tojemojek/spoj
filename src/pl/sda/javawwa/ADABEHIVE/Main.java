@@ -6,21 +6,25 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         MyScanner sc = new MyScanner();
+        out = new PrintWriter(new BufferedOutputStream(System.out));
 
         int nHowManyRows;
         int mHowManyColumns;
         int qHowManyQueries;
 
-
         nHowManyRows = sc.nextInt();
         mHowManyColumns = sc.nextInt();
         qHowManyQueries = sc.nextInt();
 
+
         int[][] howManyBees = new int[nHowManyRows][mHowManyColumns];
 
+        String tmpData[];
+
         for (int i = 0; i < nHowManyRows; i++) {
+            tmpData = sc.nextLine().split(" ");
             for (int j = 0; j < mHowManyColumns; j++) {
-                howManyBees[i][j] = sc.nextInt();
+                howManyBees[i][j] = Integer.valueOf(tmpData[j]);
             }
         }
 
@@ -30,28 +34,33 @@ public class Main {
         int tmpSum;
 
         for (int k = 0; k < qHowManyQueries; k++) {
-            tmp = sc.nextInt(); // to trzeba inaczej rozwiązać!!!
+            tmpData = sc.nextLine().split(" ");
+
+            tmp = Integer.valueOf(tmpData[0]);
 
             if (tmp == 1) {
-                rTmp = sc.nextInt() - 1;
-                cTmp = sc.nextInt() - 1;
-                tmpNumber = sc.nextInt();
+                rTmp = Integer.valueOf(tmpData[1]) - 1;
+                cTmp = Integer.valueOf(tmpData[2]) - 1;
+                tmpNumber = Integer.valueOf(tmpData[3]);
                 howManyBees[rTmp][cTmp] = howManyBees[rTmp][cTmp] + tmpNumber;
             } else {
                 tmpSum = 0;
-                tmpRowStart = sc.nextInt();
-                tmpLineStart = sc.nextInt();
-                tmpRowEnd = sc.nextInt();
-                tmpLineEnd = sc.nextInt();
+                tmpRowStart = Integer.valueOf(tmpData[1]) - 1;
+                tmpLineStart = Integer.valueOf(tmpData[2]) - 1;
+                tmpRowEnd = Integer.valueOf(tmpData[3]);
+                tmpLineEnd = Integer.valueOf(tmpData[4]);
 
-                for (int i = tmpRowStart - 1; i < tmpRowEnd; i++) {
-                    for (int j = tmpLineStart - 1; j < tmpLineEnd; j++) {
+                for (int i = tmpRowStart; i < tmpRowEnd; i++) {
+                    for (int j = tmpLineStart; j < tmpLineEnd; j++) {
                         tmpSum += howManyBees[i][j];
                     }
+
                 }
-                System.out.println(tmpSum);
+                out.println(tmpSum);
+
             }
         }
+        out.close();
     }
 
 
