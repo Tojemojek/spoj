@@ -28,7 +28,6 @@ public class Main {
             }
         }
 
-        int licznik = 0;
         int tmp, rTmp, cTmp, tmpNumber;
         int tmpRowStart, tmpRowEnd, tmpLineStart, tmpLineEnd;
         int tmpSum;
@@ -36,26 +35,27 @@ public class Main {
         for (int k = 0; k < qHowManyQueries; k++) {
             tmpData = sc.nextLine().split(" ");
 
-            tmp = Integer.valueOf(tmpData[0]);
+            tmp = Integer.parseInt(tmpData[0]);
 
             if (tmp == 1) {
-                rTmp = Integer.valueOf(tmpData[1]) - 1;
-                cTmp = Integer.valueOf(tmpData[2]) - 1;
-                tmpNumber = Integer.valueOf(tmpData[3]);
+                rTmp = Integer.parseInt(tmpData[1]) - 1;
+                cTmp = Integer.parseInt(tmpData[2]) - 1;
+                tmpNumber = Integer.parseInt(tmpData[3]);
                 howManyBees[rTmp][cTmp] = howManyBees[rTmp][cTmp] + tmpNumber;
             } else {
                 tmpSum = 0;
-                tmpRowStart = Integer.valueOf(tmpData[1]) - 1;
-                tmpLineStart = Integer.valueOf(tmpData[2]) - 1;
-                tmpRowEnd = Integer.valueOf(tmpData[3]);
-                tmpLineEnd = Integer.valueOf(tmpData[4]);
 
-                for (int i = tmpRowStart; i < tmpRowEnd; i++) {
+                tmpRowStart = Integer.parseInt(tmpData[1]) - 1;
+                tmpLineStart = Integer.parseInt(tmpData[2]) - 1;
+                tmpRowEnd = Integer.parseInt(tmpData[3]);
+                tmpLineEnd = Integer.parseInt(tmpData[4]);
+
+                for (int i = tmpRowStart; i < (tmpRowEnd); i++) {
                     for (int j = tmpLineStart; j < tmpLineEnd; j++) {
                         tmpSum += howManyBees[i][j];
                     }
-
                 }
+
                 out.println(tmpSum);
 
             }
@@ -110,5 +110,11 @@ public class Main {
         }
 
     }
-    //--------------------------------------------------------
+//--------------------------------------------------------
+
+
 }
+
+
+
+
