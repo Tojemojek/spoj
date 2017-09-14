@@ -4,8 +4,11 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 
-//DZIAŁA ALE JEST ZA WOLNE!
+//PRAWIE DZIAŁA
 public class Main {
+
+    static final int substringLenght = 2;
+
     public static void main(String[] args) {
         MyScanner sc = new MyScanner();
 
@@ -37,47 +40,94 @@ public class Main {
         String test1 = a;
         String test2 = b;
 
-        int maxLength = test1.length() + test2.length() - 1;
+        Integer test1ArrLength, test2ArrLength;
 
-        
-        char[] test1Char = test1.toCharArray();
-        int[] test1Int = new int[test1.length()];
-        char[] test2Char = test2.toCharArray();
-        int[] test2Int = new int[test2.length()];
+        test1ArrLength = (test1.length() % substringLenght == 0) ?
+                test1.length() / substringLenght : test1.length() / substringLenght + 1;
+
+        test2ArrLength = (test2.length() % substringLenght == 0) ?
+                test2.length() / substringLenght : test2.length() / substringLenght + 1;
+
+
+        int maxLength = test1ArrLength + test2ArrLength;
+
+        int[] test1Int = new int[test1ArrLength];
+        int[] test2Int = new int[test2ArrLength];
         int[] result = new int[maxLength];
 
 
-        for (int i = 0; i < test1.length(); i++) {
-            test1Int[i] = Integer.parseInt((String.valueOf(test1Char[i])));
+        int od, azDo;
+
+
+        azDo = test1.length();
+
+        for (int i = test1ArrLength - 1; i >= 0; i--) {
+
+            od = azDo - substringLenght;
+
+            if (od < 0) {
+                od = 0;
+            }
+            test1Int[i] = Integer.valueOf(test1.substring(od, azDo));
+
+            azDo -= substringLenght;
+
         }
-        for (int i = 0; i < test2.length(); i++) {
-            test2Int[i] = Integer.parseInt((String.valueOf(test2Char[i])));
+
+        azDo = test2.length();
+
+        for (int i = test2ArrLength - 1; i >= 0; i--) {
+
+            od = azDo - substringLenght;
+
+            if (od < 0) {
+                od = 0;
+            }
+            test2Int[i] = Integer.valueOf(test2.substring(od, azDo));
+
+            azDo -= substringLenght;
+
         }
+
 
         int pos1, pos2 = 0;
 
-        for (int i = (test1.length() - 1); i >= 0; i--) {
-            pos1 = test1.length() - 1 - i;
-            for (int j = (test2.length() - 1); j >= 0; j--) {
-                pos2 = (test2.length() - 1) - j;
+        for (int i = test1ArrLength - 1; i >= 0; i--) {
+            pos1 = test1ArrLength - 1 - i;
+            for (int j = test2ArrLength - 1; j >= 0; j--) {
+                pos2 = test2ArrLength - 1 - j;
                 result[pos1 + pos2] += test1Int[i] * test2Int[j];
             }
         }
 
-        for (int i = 0; i < result.length - 1; i++) {
-            result[i + 1] = result[i + 1] + result[i] / 10;
-            result[i] = result[i] % 10;
+        for (int i = 0; i < maxLength - 1; i++) {
+            result[i + 1] = result[i + 1] + result[i] / (int) Math.pow(10, substringLenght);
+            result[i] = result[i] % (int) Math.pow(10, substringLenght);
 
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+
         for (int i = result.length - 1; i >= 0; i--) {
-            if (i == 0 && result[i] == 0) {
+// DRUKUJE ZA DUŻO ZER NA POCZĄTKU!!!
+            if (i == 0) {
+                if (result[0] == 0) {
+                } else {
+                    sb.append(result[i]);
+                }
+            } else if (i == 1 && result[0] == 0) {
 
+            } else if (i == 1 && result[0] == 0 && String.valueOf(result[1]).length() == 1) {
+                sb.append(result[i]);
+            } else if (String.valueOf(result[i]).length() == 1) {
+                sb.append("0" + result[i]);
             } else {
-                out.print(result[i]);
+                sb.append(result[i]);
             }
-
         }
-        out.println();
+
+        out.println(sb.toString());
         out.flush();
     }
 
@@ -128,5 +178,5 @@ public class Main {
         }
 
     }
-    //--------------------------------------------------------
+//--------------------------------------------------------
 }

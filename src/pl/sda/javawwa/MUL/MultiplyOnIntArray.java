@@ -1,6 +1,6 @@
 package pl.sda.javawwa.MUL;
 
-public class TestOnly {
+public class MultiplyOnIntArray {
 
     public static void main(String[] args) {
 
