@@ -5,8 +5,8 @@ public class TestOnly {
     public static void main(String[] args) {
 
 
-        String test1 = "987654321";
-        String test2 = "999";
+        String test1 = "333";
+        String test2 = "9999";
 
         int maxLength = test1.length() + test2.length()-1;
 
