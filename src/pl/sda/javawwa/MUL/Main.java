@@ -3,11 +3,9 @@ package pl.sda.javawwa.MUL;
 import java.io.*;
 import java.util.StringTokenizer;
 
-
-//PRAWIE DZIAŁA
 public class Main {
 
-    static final int substringLenght = 2;
+    static final int substringLenght = 5;
 
     public static void main(String[] args) {
         MyScanner sc = new MyScanner();
@@ -51,9 +49,9 @@ public class Main {
 
         int maxLength = test1ArrLength + test2ArrLength;
 
-        int[] test1Int = new int[test1ArrLength];
-        int[] test2Int = new int[test2ArrLength];
-        int[] result = new int[maxLength];
+        long[] test1Long = new long[test1ArrLength];
+        long[] test2Long = new long[test2ArrLength];
+        long[] result = new long[maxLength];
 
 
         int od, azDo;
@@ -68,7 +66,7 @@ public class Main {
             if (od < 0) {
                 od = 0;
             }
-            test1Int[i] = Integer.valueOf(test1.substring(od, azDo));
+            test1Long[i] = Long.valueOf(test1.substring(od, azDo));
 
             azDo -= substringLenght;
 
@@ -83,7 +81,7 @@ public class Main {
             if (od < 0) {
                 od = 0;
             }
-            test2Int[i] = Integer.valueOf(test2.substring(od, azDo));
+            test2Long[i] = Long.valueOf(test2.substring(od, azDo));
 
             azDo -= substringLenght;
 
@@ -96,38 +94,40 @@ public class Main {
             pos1 = test1ArrLength - 1 - i;
             for (int j = test2ArrLength - 1; j >= 0; j--) {
                 pos2 = test2ArrLength - 1 - j;
-                result[pos1 + pos2] += test1Int[i] * test2Int[j];
+                result[pos1 + pos2] += test1Long[i] * test2Long[j];
             }
         }
 
         for (int i = 0; i < maxLength - 1; i++) {
-            result[i + 1] = result[i + 1] + result[i] / (int) Math.pow(10, substringLenght);
-            result[i] = result[i] % (int) Math.pow(10, substringLenght);
+            result[i + 1] = result[i + 1] + result[i] / (long) Math.pow(10, substringLenght);
+            result[i] = result[i] % (long) Math.pow(10, substringLenght);
 
         }
+
 
         StringBuilder sb = new StringBuilder();
         sb.append("");
 
-        for (int i = result.length - 1; i >= 0; i--) {
-// DRUKUJE ZA DUŻO ZER NA POCZĄTKU!!!
-            if (i == 0) {
-                if (result[0] == 0) {
-                } else {
-                    sb.append(result[i]);
-                }
-            } else if (i == 1 && result[0] == 0) {
 
-            } else if (i == 1 && result[0] == 0 && String.valueOf(result[1]).length() == 1) {
+        for (int i = result.length - 1; i >= 0; i--) {
+            if (String.valueOf(result[i]).length() == substringLenght) {
                 sb.append(result[i]);
-            } else if (String.valueOf(result[i]).length() == 1) {
-                sb.append("0" + result[i]);
             } else {
+                int length = substringLenght - String.valueOf(result[i]).length();
+                for (int j = 0; j < length; j++) {
+                    sb.append("0");
+                }
                 sb.append(result[i]);
             }
         }
 
-        out.println(sb.toString());
+        String printed = sb.toString();
+
+        while (printed.substring(0, 1).equals("0") && printed.length() > 1) {
+            printed = printed.substring(1);
+        }
+
+        out.println(printed);
         out.flush();
     }
 
