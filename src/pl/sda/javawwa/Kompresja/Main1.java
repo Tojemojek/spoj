@@ -1,4 +1,4 @@
-package pl.sda.javawwa;
+package pl.sda.javawwa.Kompresja;
 
 import java.util.*;
 
