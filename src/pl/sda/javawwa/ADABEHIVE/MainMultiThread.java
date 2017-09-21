@@ -69,7 +69,7 @@ public class MainMultiThread {
                 Thread th2 = new Thread(mt2);
 
                 th.start();
-                th2.start();
+                th2.run();
 
 //                for (int i = tmpRowStart; i < (tmpRowEnd1); i++) {
 //                    for (int j = tmpLineStart; j < tmpLineEnd; j++) {
@@ -83,7 +83,7 @@ public class MainMultiThread {
 //                    }
 //                }
 
-                while (th.getState()!=TERMINATED || th2.getState()!=TERMINATED){
+                while (th.getState()!=TERMINATED){
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
