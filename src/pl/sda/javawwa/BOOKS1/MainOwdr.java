@@ -3,12 +3,7 @@ package pl.sda.javawwa.BOOKS1;
 import java.io.*;
 import java.util.StringTokenizer;
 
-
-
-//Trzeba dorobić - sprawdzanie po przebiegu czy max workload nie spadł
-// - i jeśli tak to go wprowadzić bo inaczej źle dzieli pozostałą część
-//Przeglądanie od końca, żeby najmniejszy workload przypadał na początku
-public class Main {
+public class MainOwdr {
     public static void main(String[] args) {
         MyScanner sc = new MyScanner();
         out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -28,8 +23,9 @@ public class Main {
         long maxWorkloadLimit2;
 
         StringBuilder sb = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
         sb.append("");
-
+        sb2.append("");
 
         for (int i = 0; i < howManyCases; i++) {
             booksNumber = sc.nextInt();
@@ -49,49 +45,50 @@ public class Main {
             }
 
             maxWorkloadLimit = whatIsMaximumPagesToBeDone(pages, scribers, longestBook, totalPages);
-            System.out.println("\n\nMoje parametry");
-            System.out.println("Ile książek " + pages.length + " ilość pisarzy " + scribers + " najdłuższa książka " + longestBook + " łącznie stron " + totalPages);
-            System.out.println("Max obciążenie robotą " + maxWorkloadLimit);
+//            System.out.println("\n\nMoje parametry");
+//            System.out.println("Ile książek " + pages.length + " ilość pisarzy " + scribers + " najdłuższa książka " + longestBook + " łącznie stron " + totalPages);
+//            System.out.println("Max obciążenie robotą " + maxWorkloadLimit);
 
-            for (int j = 0; j < booksNumber; j++) {
-
-
+            sb2.setLength(0);
+            for (int j = (int) booksNumber - 1; j >= 0; j--) {
                 sb.setLength(0);
                 tmpPagesDone = pages[j];
                 sb.append(pages[j]);
 
-                if (scribers == booksNumber - j) {
-                    while (j < booksNumber - 1) {
-                        sb.append(" / ").append(pages[j + 1]);
-                        tmpPagesDone += pages[j + 1];
-                        j++;
+                if (scribers == (j + 1)) {
+                    while (j > 0) {
+                        sb.insert(0, " / ");
+                        sb.insert(0, pages[j - 1]);
+                        tmpPagesDone += pages[j - 1];
+                        j--;
                         scribers--;
                     }
                 } else if (scribers > 1) {
-                    while (j < booksNumber - 1 && tmpPagesDone + pages[j + 1] <= maxWorkloadLimit) {
-                        sb.append(" ").append(pages[j + 1]);
-                        tmpPagesDone += pages[j + 1];
-                        j++;
+                    while (j > 0 && tmpPagesDone + pages[j - 1] <= maxWorkloadLimit &&  (j + 1)>scribers) {
+                        sb.insert(0, " ");
+                        sb.insert(0, pages[j - 1]);
+                        tmpPagesDone += pages[j - 1];
+                        j--;
                     }
-                    if (j != booksNumber - 1) {
-                        sb.append(" / ");
+                    if (j != 0) {
+                        sb.insert(0, " / ");
                     }
                 } else {
-                    while (j < booksNumber - 1) {
-                        sb.append(" ").append(pages[j + 1]);
-                        tmpPagesDone += pages[j + 1];
-                        j++;
+                    while (j > 0) {
+                        sb.insert(0, " ");
+                        sb.insert(0, pages[j - 1]);
+                        tmpPagesDone += pages[j - 1];
+                        j--;
                     }
 
                 }
-
                 scribers--;
-                out.print(sb.toString());
-                out.flush();
+
+                sb2.insert(0, sb.toString());
             }
 
-
-            out.println();
+            out.println(sb2.toString());
+            out.flush();
         }
 
 
@@ -115,18 +112,19 @@ public class Main {
     public static long whatIsMaximumPagesToBeDone(int pages[], long scribers, int longestBook, long totalPages) {
 
         long howManyBooks = pages.length;
-        long maxWorkload = longestBook;
+        long maxSingleWorkLoad = longestBook;
         long totalWorkLoad = totalPages;
 
-        while (maxWorkload < totalWorkLoad) {
+        while (maxSingleWorkLoad < totalWorkLoad) {
 
-            long tmpLong = maxWorkload + (totalWorkLoad - maxWorkload) / 2;
+            //long tmpTotalWorkdLoad = maxSingleWorkLoad + (totalWorkLoad - maxSingleWorkLoad) / 2;
+            long tmpTotalWorkLoad = maxSingleWorkLoad;
 
             int tmpWorkers = 1;
             long tmpWorkLoad = 0;
 
-            for (int i = 0; i < howManyBooks; ++i) {
-                if (tmpWorkLoad + pages[i] <= tmpLong) {
+            for (int i = 0; i < howManyBooks; i++) {
+                if (tmpWorkLoad + pages[i] <= tmpTotalWorkLoad) {
                     tmpWorkLoad += pages[i];
                 } else {
                     tmpWorkers++;
@@ -135,13 +133,13 @@ public class Main {
             }
 
             if (tmpWorkers <= scribers) {
-                totalWorkLoad = tmpLong;
+                totalWorkLoad = tmpTotalWorkLoad;
             } else {
-                maxWorkload = tmpLong + 1;
+                maxSingleWorkLoad = tmpTotalWorkLoad + 1;
             }
 
         }
-        return maxWorkload;
+        return maxSingleWorkLoad;
     }
 
     //-----------PrintWriter for faster output---------------------------------
